@@ -96,14 +96,45 @@ The Python SDK doesn't currently surface the Serverless AI API.
 
 {{ startTab "TinyGo"}}
 
-TODO. For example:
+Serverless AI functions are available in the `github.com/fermyon/spin/sdk/go/llm` pakage. See [Go Packages](https://pkg.go.dev/github.com/fermyon/spin/sdk/go/llm) for reference documentation. For example:
 
-```javascript
-TODO
+```go
+params := &llm.InferencingParams {
+    MaxTokens: 10,
+    Temperature: 0.5,
+}
+inferenceResult, err := llm.Infer("llama2-chat", "This is my prompt", params)
+if err != nil {
+    fmt.Println("Failed to run inference", err)
+}
+fmt.Println(inferenceResult.Text)
+
+embeddingResult, err := llm.GenerateEmbeddings("AllMiniLmL6V2", []string{"Please embed this sentence"})
+if err != nil {
+    fmt.Println("Failed to generate embeddings", err)
+}
+fmt.Println(embeddingResult.Embeddings)
 ```
 
 **General Notes**
-* TODO
+
+`infer` operation:
+
+- It takes in the following arguments - model name, prompt and a optional third parameter for inferencing options (pass `nil` if you don't want to specify it).
+- The model name is a string.
+- The params allows you to specificy `MaxTokens`, `RepeatPenalty`, `RepeatPenaltyLastNTokenCount`, `Temperature`, `TopK`, `TopP`.
+- It returns a result struct with a `Text` field that contains the answer and a `Usage` field that contains metadata about the operation.
+
+`generateEmbeddings` operation:
+
+- It takes two arguments - model name and list of strings to generate the embeddings for.
+- The model name is a string.
+- It returns a result struct with a `Embeddings` field that contains the `[][]float32` embeddings and a `Usage` field that contains metadata about the operation.
+
+{{ blockEnd }}
+
+{{ startTab "Swift"}}
+* The inferencing parameters are optional and you can pass `nil` if you don't want to specify them
 
 {{ blockEnd }}
 
